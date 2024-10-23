@@ -1,0 +1,127 @@
+Meta:
+  logName: 1D_LSTM_1F
+  #原始数据路径
+  initDataFolder: /data/Running/BCI_IV_2a
+  basicFolder: /root/MI/Result/REI-Net
+  #/home/chan/data/chan/meya/Result/MI/DADLNet/Intra
+  #/data0/meya/MI/Intersub/CMANet
+  # 中医药：/home/xumeiyan/Public/Reslut/CMANet
+  folderName: 202307025_BCI2008_inter_noAttention_400Hz_2class_49channel_128_0.125_resit #模型保存文件夹
+  sessionNum: 2
+  reCreate: false
+  recreate_fig: true
+  equalSample: true
+  standardize: false #1dcnn网络数据标准化
+  scale: false #1dcnn网络数据归一化
+  segmentName: 1D_4S_FB4-100_NoS_No N_SeqChan_LabelHotCode
+  expandData: 1000000 #经过RESIT插值需要 倍乘1000000000000 / spline需要倍乘1000000000000 /正常情况下倍乘1000000
+  interp: false #是否进行插值
+  interpType: Resit #neighbor  差值类型Resit or zero
+  reference: false #是否进行平均重参考
+  saveMat: false  #是否保存mat文件
+  matPath:    #mat文件保存路径
+  setPath: /data/Running/BCI_IV_2a/RESIT_filter #set文件保存路径
+  new_chan:
+  - FT7
+  - FC5
+  - FC6
+  - FT8
+  - T7
+  - T8
+  - TP7
+  - CP5
+  - CP6
+  - TP8
+  - P7
+  - P5
+  - P3
+  - P4
+  - P6
+  - P8
+  Datasets: BCIC2a  #选择训练的数据集[BCIC2a/OpenBMI]
+  ReSampling: true  #是否进行降采样
+  downSampling: 400  #降采样之后的采样率
+  doShuffle: true
+  normalize: false
+  frequency: 250   #数据原始采样率
+  seconds: 1    #滑动切割窗口大小
+  MiTime: 4     #运动想象片段长度
+  forcast: 0
+  hotCode: false  #是否使用独热编码
+  subsample: 9  #被试数量
+  SelectSub: false #选择被试进行训练
+  intrasub: true
+  isTowClass: false
+  TrainType: independent  #数据生成类别 dependent/independent
+  To3D: true  #是否进行3D数据转换
+  ClassNum: 2        #数据标签个数  2/3
+  ChannelNum: 36    #选择的通道个数
+  ChanStart: 1        #用于BCI2008通道选择 从0~22
+  ChanEnd: 21         #用于BCI2008通道选择
+  Channel: 49      #2D通道维度
+  excludeChs:
+  - HEOL
+  - HEOR
+  - ECG
+  - VEOL
+  - VEOU
+  minFreq: 0.5
+  maxFreq: 100
+  step: 0.06  #窗口滑动步长
+  doFilter: true
+  notch: [50] #50Hz凹陷滤波
+  pkl_num: 1
+  multiBand: false  #是否生成多频率段数据
+  filter: [[4,8],[8,12],[12,16],[16,20],[20,24],[24,28],[28,32],[32,36],[36,40]]  #多频率段范围
+  FilterType: fir
+ML:
+  folderNum: 5   #折数
+  shuffle: true
+  copyTimes: 10
+  pool_size_1d: 2
+  conv2D_filter: 64
+  runInProcess: True  #多进程运行
+  test_newest: false
+  folderIndex: []
+  trainEpoch: 1000
+  batch_size: 64
+  curSubIndex: 24
+  curFolderIndex: 1
+  steps_per_epoch: 80
+  pltModel: true
+  filterNum: 20
+  conv2D_kernelSize: 2
+  learningRate: 0.001
+  dropout_rate: 0.25
+  layerType: REI_Net   #训练模型名称，修改这里可以改变训练的模型 FBCnet
+  Lstm_Size: 64
+  historyPath: trainHistory
+  from_weight: true
+  activation: sigmoid
+  loss: binary_crossentropy  #categorical_crossentropy/binary_crossentropy
+  Dense_1: 256
+  conv2D_shape:
+  - 2
+  - 2
+  loadModel: true
+  reshape_row: 1
+  kernelSize: 4
+  validSize: 0.3
+  optimizer: nadam
+  callback: val_loss
+  backMode: min
+  sortType: 1
+  checkEffect: true
+  dataShape: #输入到模型中的数据维度，用于测试过程 （400,4,9）
+  - 400
+  - 4
+  - 9
+imports:
+  MI.loadData:
+  - loadData
+  - loadData_test
+  - getEvents
+  - countSubNum
+  - get_31MI_1D as getChannels
+  meya.loadData_YML:
+  - getData_chanSeq_BCI2008 as getData
