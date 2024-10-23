@@ -12,7 +12,7 @@ Data generation is divided into preprocessing and training data folders. The sav
 (1): Preprocessed data is used for operations such as data filtering, downsampling, and rereferencing, and then the subject_dependent_setting_spilt() function is used to divide the data. The data will be saved in the ProcessData folder.
 (2): Training data is divided within or across subjects through related functions. The divided data will be saved in the TrainData folder.
 
-**- Data Training**
+### -Data Training
 
 Run EEGML/MI/Train/train.py ../model/EEGML_XXX.yml
 
